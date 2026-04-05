@@ -1,0 +1,6 @@
+@Virtual_Meeting_Management_HostAddress = http://localhost:5147
+
+GET {{Virtual_Meeting_Management_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
