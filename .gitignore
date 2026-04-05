@@ -1,0 +1,40 @@
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+# Optional if you restore packages locally:
+packages/
+
+# ASP.NET Core
+wwwroot/lib/
+node_modules/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE
+.idea/
+*.vscode/
+
+# Other cache
+*.cache
+/E-Learning/wwwroot/uploads/profiles
