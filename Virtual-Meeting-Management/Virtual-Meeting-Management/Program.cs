@@ -1,3 +1,5 @@
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Virtual_Meeting_Management
 {
@@ -13,6 +15,15 @@ namespace Virtual_Meeting_Management
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Add DbContext
+            builder.Services.AddDbContext<VirtualMeetingDbContext>(options =>
+                options.UseMySql(
+                    builder.Configuration.GetConnectionString("ConnectionStrings"),
+                    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ConnectionStrings"))
+                )
+            );
+            
 
             var app = builder.Build();
 
