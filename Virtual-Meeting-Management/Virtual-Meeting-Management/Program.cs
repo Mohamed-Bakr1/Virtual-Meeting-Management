@@ -1,3 +1,4 @@
+using Infrastructure.DI;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,14 +17,9 @@ namespace Virtual_Meeting_Management
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Add DbContext
-            builder.Services.AddDbContext<VirtualMeetingDbContext>(options =>
-                options.UseMySql(
-                    builder.Configuration.GetConnectionString("ConnectionStrings"),
-                    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ConnectionStrings"))
-                )
-            );
-            
+            // Register Infrastructure
+            builder.Services.AddInfrastructure(builder.Configuration);
+
 
             var app = builder.Build();
 
