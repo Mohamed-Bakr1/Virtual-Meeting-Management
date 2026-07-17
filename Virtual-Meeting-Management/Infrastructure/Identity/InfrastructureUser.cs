@@ -2,10 +2,10 @@
 
 namespace Infrastructure.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class InfrastructureUser : IdentityUser
     {
         public string FullName { get; set; }
-        public string? Gender { get; set; }
+        public bool? Gender { get; set; }
         public string? ProfilePicturePath { get; set; }
     }
 }
