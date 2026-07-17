@@ -1,6 +1,9 @@
+using Application;
 using Infrastructure.DI;
+using Infrastructure.Identity;
 using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
 
 namespace Virtual_Meeting_Management
 {
@@ -17,9 +20,66 @@ namespace Virtual_Meeting_Management
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Register Infrastructure
-            builder.Services.AddInfrastructure(builder.Configuration);
+            // Register Application Layer
+            builder.Services.AddApplicationLayer(builder.Configuration);
 
+            // Register Infrastructure
+            builder.Services.AddInfrastructureLayer(builder.Configuration);
+
+            // Register ASP.NET Core Identity with the custom InfrastructureUser class
+            builder.Services.AddIdentity<InfrastructureUser, IdentityRole>()
+                .AddEntityFrameworkStores<VirtualMeetingDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+                // Add the JWT Bearer definition
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' followed by a space and the JWT token."
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+                var basePath = AppContext.BaseDirectory;
+
+                // API project XML
+                var apiXml = Path.Combine(basePath, "E-Learning.xml");
+                if (File.Exists(apiXml))
+                    c.IncludeXmlComments(apiXml, true);
+
+                // Application project XML
+                var appXmlPath = Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Application\bin\Debug\net8.0\Application.xml");
+                appXmlPath = Path.GetFullPath(appXmlPath);
+                if (File.Exists(appXmlPath))
+                    c.IncludeXmlComments(appXmlPath, true);
+
+                // Domain project XML (optional)
+                var domainXmlPath = Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Domain\bin\Debug\net8.0\Domain.xml");
+                domainXmlPath = Path.GetFullPath(domainXmlPath);
+                if (File.Exists(domainXmlPath))
+                    c.IncludeXmlComments(domainXmlPath, true);
+            });
 
             var app = builder.Build();
 
