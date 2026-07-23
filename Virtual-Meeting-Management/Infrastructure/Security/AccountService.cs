@@ -1,7 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces.IUser;
 using Domain.Common;
-using Domain.Entities;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -62,6 +61,64 @@ namespace Infrastructure.Security
             }
 
             return Result.Success();
+        }
+
+        public async Task<Result<ValidLoginDto>> LoginAsync(LoginDto loginDto)
+        {
+            var checkUserExistence = await CheckEmailExistenceForLoginAsync(loginDto.Email);
+
+            if (!checkUserExistence.IsSuccess)
+                return Result<ValidLoginDto>.Failure("User not registered.");
+
+            var checkPassword = await CheckPasswordMatchAsync(checkUserExistence.Data, loginDto.Password);
+
+            if (!checkPassword.IsSuccess)
+                return Result<ValidLoginDto>.Failure("Wrong Password!");
+
+            var response = await PrepareLoginResponseAsync(checkUserExistence.Data);
+
+            return Result<ValidLoginDto>.Success(response, "User login successfully!");
+        }
+
+        private async Task<Result<InfrastructureUser>> CheckEmailExistenceForLoginAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                return Result<InfrastructureUser>.Success(user);
+            }
+
+            return Result<InfrastructureUser>.Failure("");
+        }
+
+        private async Task<Result> CheckPasswordMatchAsync(InfrastructureUser user, string password)
+        {
+            bool match = await _userManager.CheckPasswordAsync(user, password);
+
+            if (!match)
+                return Result.Failure("");
+
+            return Result.Success();
+        }
+
+        private async Task<ValidLoginDto> PrepareLoginResponseAsync(InfrastructureUser user)
+        {
+            var claims = await _userManager.GetClaimsAsync(user);
+
+            var role = await _userManager.GetRolesAsync(user);
+
+            var token = _tokenService.GenerateToken(claims);
+
+            var response = new ValidLoginDto
+            {
+                Token = token,
+                Email = user.Email,
+                Name = user.FullName,
+                Roles = role
+            };
+
+            return response;
         }
 
         private async Task CreateClaimsAsync(InfrastructureUser User, string Role)
