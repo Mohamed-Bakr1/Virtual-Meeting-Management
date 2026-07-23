@@ -14,6 +14,7 @@ namespace Application
             IConfiguration configuration)
         {
             services.AddScoped<IUseCase<RegisterDto, Result>, RegisterUseCase>();
+            services.AddScoped<IUseCase<LoginDto, Result<ValidLoginDto>>, LoginUseCase>();
 
             return services;
         }
