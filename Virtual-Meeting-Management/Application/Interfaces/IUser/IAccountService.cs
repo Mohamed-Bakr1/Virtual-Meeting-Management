@@ -5,10 +5,10 @@ namespace Application.Interfaces.IUser
 {
     public interface IAccountService
     {
-        //Task<Result<ValidloginDto>> LoginAsync(ApplicationUser user);
+        Task<Result<ValidLoginDto>> LoginAsync(LoginDto loginDto);
         Task<Result<string>> RegisterAsync(RegisterDto registerDto);
         Task<Result> CheckEmailExistenceAsync(string email);
-        //Task<Result<ApplicationUser>> CheckEmailExistenceWithReturnAsync(string email);
+        //Task<Result<UserDto>> CheckEmailExistenceForLoginAsync(string email);
         //Task<Result> CheckPasswordMatchAsync(ApplicationUser user, string password);
         //Task<Result<ExternalLoginClaimsDTO>> ValidateAndExtractExternalLoginClaims(ExternalLoginDto externalLoginDto, ClaimsPrincipal externalLoginClaims);
         //Task<ValidloginDto> PrepareLoginResponseAsync(ApplicationUser user);
