@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.AuthenticationDto;
 using Application.Interfaces.IUser;
 using Domain.Common;
 using Infrastructure.Identity;
