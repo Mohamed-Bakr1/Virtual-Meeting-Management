@@ -1,9 +1,9 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.AuthenticationDto;
 using Application.Interfaces;
 using Application.Interfaces.IUser;
 using Domain.Common;
 
-namespace Application.UseCases
+namespace Application.UseCases.AuthenticationUseCase
 {
     public class LoginUseCase : IUseCase<LoginDto, Result<ValidLoginDto>>
     {
