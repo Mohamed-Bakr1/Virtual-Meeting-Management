@@ -1,11 +1,11 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.AuthenticationDto;
 using Application.Interfaces;
 using Application.Interfaces.IUser;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces;
 
-namespace Application.UseCases
+namespace Application.UseCases.AuthenticationUseCase
 {
     public class RegisterUseCase : IUseCase<RegisterDto, Result>
     {
