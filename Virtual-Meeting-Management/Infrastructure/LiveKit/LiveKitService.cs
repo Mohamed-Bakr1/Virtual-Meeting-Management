@@ -1,11 +1,12 @@
-﻿using Domain.Common;
+﻿using Application.Interfaces;
+using Domain.Common;
 using Livekit.Server.Sdk.Dotnet;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace Infrastructure.LiveKit
 {
-    public class LiveKitService
+    public class LiveKitService : ILiveKitService
     {
         private readonly RoomServiceClient _roomServiceClient;
         private readonly LiveKitSettings _settings;
