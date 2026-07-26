@@ -1,6 +1,8 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.AuthenticationDto;
+using Application.DTOs.StreamingDto;
 using Application.Interfaces;
-using Application.UseCases;
+using Application.UseCases.AuthenticationUseCase;
+using Application.UseCases.StreamingUseCase;
 using Domain.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,7 @@ namespace Application
         {
             services.AddScoped<IUseCase<RegisterDto, Result>, RegisterUseCase>();
             services.AddScoped<IUseCase<LoginDto, Result<ValidLoginDto>>, LoginUseCase>();
+            services.AddScoped<IUseCase<CreateMeetingDto, Result>, CreateMeetingUseCase>();
 
             return services;
         }
