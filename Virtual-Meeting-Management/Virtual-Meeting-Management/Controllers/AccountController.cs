@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.AuthenticationDto;
 using Application.Interfaces;
 using Domain.Common;
 using Microsoft.AspNetCore.Authorization;
